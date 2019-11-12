@@ -11,6 +11,8 @@ ADD_DEFINITIONS(${GTKMM_CFLAGS_OTHER})
 INCLUDE_DIRECTORIES(include/)
 file(GLOB SRC
     "source/*.cpp"
+    "source/content/*.cpp"
+    "source/options/*.cpp"
 )
 
 ADD_EXECUTABLE(lightcode ${SRC})

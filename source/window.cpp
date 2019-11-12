@@ -1,4 +1,6 @@
 #include "window.hpp"
+#include "content/textedit.hpp"
+#include "options/optionseditor.hpp"
 #include <gtkmm.h>
 using namespace lc;
 
@@ -6,10 +8,13 @@ static const char *menu_bar_layout =
 	"<ui>"
 	"	<menubar name='MenuBar'>"
 	"		<menu action='FileMenu'>"
-	"			<menuitem action='New' />"
-	"			<menuitem action='Open' />"
+	"			<menuitem action='New' accel='&lt;Primary&gt;n' />"
+	"			<menuitem action='Open' accel='&lt;Primary&gt;o' />"
 	"			<menuitem action='Save' />"
 	"			<menuitem action='SaveAs' />"
+	"		</menu>"
+	"		<menu action='OptionsMenu'>"
+	"			<menuitem action='Editor' />"
 	"		</menu>"
 	"	</menubar>"
 	"</ui>";
@@ -18,7 +23,7 @@ void Window::on_file_new()
 {
 	// Clear the editor of its current content, 
 	// including reference to files
-	editor.clear();
+	content.add_page(new TextEdit());
 }
 
 void Window::on_file_open()
@@ -31,7 +36,13 @@ void Window::on_file_open()
 	if (result == Gtk::RESPONSE_OK)
 	{
 		string file_path = file_chooser.get_filename();
-		editor.open(file_path);
+		TextEdit *edit_page = new TextEdit(file_path);
+
+		ContentPage *curr_page = content.current();
+		if (curr_page->has_content())
+			content.add_page(edit_page);
+		else
+			curr_page->open(file_path);
 	}
 }
 
@@ -45,25 +56,32 @@ void Window::on_file_save_as()
 
 }
 
+void Window::options_editor()
+{
+	OptionsEditor options;
+	options.run();
+}
+
 Window::Window() :
 	layout(Gtk::Orientation::ORIENTATION_VERTICAL)
 {
 	// Create menubar 
 	auto action_group = Gtk::ActionGroup::create();
 	action_group->add(Gtk::Action::create("FileMenu", "_File"));
+	action_group->add(Gtk::Action::create("OptionsMenu", "_Options"));
 
 	// Create actions
 	action_group->add(Gtk::Action::create("New", "_New"), 
 		sigc::mem_fun(*this, &Window::on_file_new));
-
 	action_group->add(Gtk::Action::create("Open", "_Open"),
 		sigc::mem_fun(*this, &Window::on_file_open));
-
 	action_group->add(Gtk::Action::create("Save", "_Save"),
 		sigc::mem_fun(*this, &Window::on_file_save));
-
 	action_group->add(Gtk::Action::create("SaveAs", "Save _As"),
 		sigc::mem_fun(*this, &Window::on_file_save_as));
+	
+	action_group->add(Gtk::Action::create("Editor", "_Editor"), 
+		sigc::mem_fun(*this, &Window::options_editor));
 
 	// Create menu bar ui
 	auto ui = Gtk::UIManager::create();
@@ -76,9 +94,10 @@ Window::Window() :
 		Gtk::PackOptions::PACK_SHRINK);
 
 	// Create content
-	layout.pack_start(editor);
+	content.add_page(new TextEdit());
+	layout.pack_start(content);
 
 	add(layout);
+	set_default_size(800, 600);
 	show_all_children();
 }
-

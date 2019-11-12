@@ -2,7 +2,8 @@
 #include <gtkmm/window.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/box.h>
-#include "textedit.hpp"
+#include <gtkmm/notebook.h>
+#include "content/contentmanager.hpp"
 
 namespace lc
 {
@@ -19,12 +20,13 @@ namespace lc
 		void on_file_save();
 		void on_file_save_as();
 
+		// Options actions
+		void options_editor();
+
 		// Menubar
 		Gtk::MenuBar menu_bar;
 		Gtk::Box layout;
-	
-		// Content
-		TextEdit editor;
+		ContentManager content;
 	
 	};
 
