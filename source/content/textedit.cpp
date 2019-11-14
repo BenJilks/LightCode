@@ -20,8 +20,9 @@ TextEdit::TextEdit(string file_path) :
 	context->add_provider(css_provider, 
 		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	
-	apply_settings();
 	add(text);
+	apply_settings();
+	title.update_title(get_title());
 }
 
 TextEdit::TextEdit() :
@@ -78,6 +79,7 @@ void TextEdit::open(string file)
 	buffer->set_text(string(&data[0], len));
 	file_path = file;
 	content_flag = true;
+	title.update_title(get_title());
 }
 
 void TextEdit::clear()
