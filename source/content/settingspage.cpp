@@ -34,10 +34,9 @@ SettingBox::SettingBox(string name, Setting *setting) :
 
         case SettingType::Font:
         {
-            auto font = setting->get_font();
             auto font_button = new Gtk::FontButton;
             font_button->set_use_font(true);
-            font_button->set_font_name(font.first + " " + std::to_string(font.second));
+            font_button->set_font_name(setting->get_font());
             font_button->signal_font_set().connect(
                 sigc::mem_fun(this, &SettingBox::updated_font));
             second = font_button;
@@ -72,19 +71,7 @@ void SettingBox::updated_font()
     // Get font information
     auto font_button = (Gtk::FontButton*)second;
     auto font_map = font_button->get_font_name();
-    pair<string, int> font;
-
-    // Find the last space or where the font size starts
-    int i;
-    for (i = font_map.length(); i >= 0; --i)
-        if (isspace(font_map[i]))
-            break;
-    
-    // Separate the font name and size
-    string size_str = font_map.substr(i, font_map.length() - i);
-    font.first = font_map.substr(0, i);
-    font.second = std::atoi(size_str.c_str());
-    setting->set_font(font);
+    setting->set_font(font_map);
 }
 
 SettingsPage::SettingsPage(string setting_name, std::map<string, Setting> *settings) :

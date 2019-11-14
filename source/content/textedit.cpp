@@ -33,11 +33,13 @@ void TextEdit::apply_settings(SettingsManager *settings)
 	auto font = editor["Font"].get_font();
 	auto tab_size = editor["Tab Size"].get_int();
 
+	Pango::FontDescription font_desc(font);
 	string css = 
 		"* { "
-		"	font-family: \"" + font.first + "\";"
-		"	font-size: " + std::to_string(font.second) + "px;"
+		"	font-family: \"" + font_desc.get_family() + "\";"
+		"	font-size: " + std::to_string(font_desc.get_size() / 1024) + "px;"
 		"}";
+	printf("%s\n", css.c_str());
 	css_provider->load_from_data(css);
 }
 

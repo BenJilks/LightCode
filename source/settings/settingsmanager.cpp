@@ -11,7 +11,7 @@ using namespace lc;
 SettingsManager::SettingsManager()
 {
     map<string, Setting> editor;
-    editor["Font"] = Setting(std::make_pair("Monospace", 12));
+    editor["Font"] = Setting(SettingType::Font, "Monospace 12");
     editor["Tab Size"] = Setting(4, 0, 100);
     settings["Editor"] = editor;
 }
@@ -80,24 +80,6 @@ void SettingsManager::save()
     ofstream.close();
 }
 
-void SettingsManager::load_font(rapidjson::Value &font, Setting &setting)
-{
-    // The datatype must be an array of size 2
-    if (font.IsArray() && font.Size() >= 2)
-    {
-        rapidjson::Value &font_name_setting = font[0];
-        rapidjson::Value &font_size_setting = font[1];
-
-        // The first is the font name and second, its size
-        if (font_name_setting.IsString() && font_size_setting.IsInt())
-        {
-            setting.set_font(std::make_pair(
-                font_name_setting.GetString(), 
-                font_size_setting.GetInt()));
-        }
-    }
-}
-
 void SettingsManager::load_setting(map<string, Setting> &setting, 
     rapidjson::Value &json)
 {
@@ -119,7 +101,8 @@ void SettingsManager::load_setting(map<string, Setting> &setting,
                     break;
                 
                 case SettingType::Font:
-                    load_font(data, set.second);
+                    if (data.IsString())
+                        set.second.set_font(data.GetString());
                     break;
             }
         }
@@ -147,11 +130,8 @@ rapidjson::Value SettingsManager::save_setting(map<string, Setting> &setting,
 
             case SettingType::Font: 
             {
-                string font_name = value.get_font().first;
-                item.SetArray();
-                item.PushBack(rapidjson::Value(font_name.c_str(), 
-                    font_name.length(), alloc), alloc);
-                item.PushBack(rapidjson::Value(value.get_font().second), alloc);
+                item.SetString(value.get_font().c_str(), 
+                    value.get_font().length(), alloc);
                 break;
             }
         }
