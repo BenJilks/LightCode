@@ -1,38 +1,42 @@
 #include "content/textedit.hpp"
 #include "options/optionseditor.hpp"
+#include <gtkmm/cssprovider.h>
 #include <fstream>
 #include <vector>
 using std::vector;
 using namespace lc;
 
-TextEdit::TextEdit() :
-	file_path("")
-{
-	buffer = text.get_buffer();
-	apply_settings();
-	add(text);
-}
-
 TextEdit::TextEdit(string file_path) :
 	file_path(file_path)
 {
 	buffer = text.get_buffer();
-	open(file_path);
+	if (file_path != "")
+		open(file_path);
+
+	// Create css provider
+	auto context = text.get_style_context();
+	css_provider = Gtk::CssProvider::create();
+	context->add_provider(css_provider, 
+		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	
 	apply_settings();
 	add(text);
 }
 
+TextEdit::TextEdit() :
+	TextEdit("") {}
+
 void TextEdit::apply_settings()
 {
-	auto font_setting = OptionsEditor::get_font();
+	auto font = OptionsEditor::get_font();
+	auto tab_size = OptionsEditor::get_tab_size();
 
-	Pango::FontDescription desc;
-	desc.set_family("Standard Symbols PS Bold");
-	//desc.set_size(font_setting.second);
-	printf("Setting font to: %s %i\n", font_setting.first.c_str(), font_setting.second);
-
-	auto font = get_pango_context()->load_font(desc);
-	text.set_font_map(font->get_font_map());
+	string css = 
+		"* { "
+		"	font-family: \"" + font.first + "\";"
+		"	font-size: " + std::to_string(font.second) + "px;"
+		"}";
+	css_provider->load_from_data(css);
 }
 
 string TextEdit::get_title() const

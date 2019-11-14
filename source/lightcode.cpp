@@ -1,13 +1,14 @@
 #include <iostream>
 #include <gtkmm/application.h>
+#include <gtkmm/cssprovider.h>
 #include "window.hpp"
-#include "options/optionseditor.hpp"
+#include "options/options.hpp"
 using namespace lc;
 
 int main(int argc, char *argv[])
 {
 	// Load settings
-	OptionsEditor::load();
+	Options::load();
 
 	// Create new gtk app
 	auto app = Gtk::Application::create(

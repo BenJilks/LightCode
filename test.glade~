@@ -49,16 +49,46 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="font">
-                <property name="label" translatable="yes">Monospace Whatever 12</property>
+              <object class="GtkFontButton" id="font">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="hexpand">True</property>
+                <property name="font">Sans 12</property>
+                <property name="language">en-us</property>
+                <property name="preview_text"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Tab Size</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="tab_size">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="progress_pulse_step">0</property>
+                <property name="primary_icon_stock">gtk-discard</property>
+                <property name="secondary_icon_stock">gtk-discard</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="input_purpose">number</property>
+                <property name="climb_rate">0.040000000000000001</property>
+                <property name="numeric">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
               </packing>
             </child>
           </object>

@@ -13,8 +13,10 @@ namespace lc
     {
     public:
         ContentManager();
+        ~ContentManager();
 
         void add_page(ContentPage *page);
+        void apply_settings();
         ContentPage *current();
     
     private:

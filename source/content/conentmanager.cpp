@@ -6,6 +6,12 @@ ContentManager::ContentManager()
     set_scrollable(true);
 }
 
+ContentManager::~ContentManager()
+{
+    for (auto page : pages)
+        delete page;
+}
+
 void ContentManager::add_page(ContentPage *page)
 {
     page_labels.emplace_back(page->get_title());
@@ -14,6 +20,12 @@ void ContentManager::add_page(ContentPage *page)
     int last = pages.size() - 1;
     append_page(*page, page_labels[last]);
     show_all_children();
+}
+
+void ContentManager::apply_settings()
+{
+    for (auto page : pages)
+        page->apply_settings();
 }
 
 ContentPage *ContentManager::current()

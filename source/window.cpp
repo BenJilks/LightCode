@@ -1,7 +1,9 @@
 #include "window.hpp"
 #include "content/textedit.hpp"
+#include "options/options.hpp"
 #include "options/optionseditor.hpp"
 #include <gtkmm.h>
+#include <iostream>
 using namespace lc;
 
 static const char *menu_bar_layout = 
@@ -60,6 +62,9 @@ void Window::options_editor()
 {
 	OptionsEditor options;
 	options.run();
+
+	content.apply_settings();
+	Options::save();
 }
 
 Window::Window() :

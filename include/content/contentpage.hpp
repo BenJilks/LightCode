@@ -15,6 +15,7 @@ namespace lc
 
         virtual string get_title() const = 0;
         virtual bool has_content() const = 0;
+        virtual void apply_settings() = 0;
 
     private:
 
