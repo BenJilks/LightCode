@@ -6,19 +6,16 @@ using std::string;
 namespace lc
 {
 
+    class PageTitle;
     class ContentPage : public Gtk::ScrolledWindow
     {
     public:
         ContentPage() {}
-
         virtual void open(string file_path) = 0;
 
         virtual string get_title() const = 0;
         virtual bool has_content() const = 0;
         virtual void apply_settings() = 0;
-
-    private:
-
 
     };
 

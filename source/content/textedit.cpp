@@ -1,4 +1,5 @@
 #include "content/textedit.hpp"
+#include "content/contentmanager.hpp"
 #include "options/optionseditor.hpp"
 #include <gtkmm/cssprovider.h>
 #include <fstream>
