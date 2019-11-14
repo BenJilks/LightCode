@@ -1,7 +1,5 @@
 #include "window.hpp"
 #include "content/textedit.hpp"
-#include "options/options.hpp"
-#include "options/optionseditor.hpp"
 #include <gtkmm.h>
 #include <iostream>
 using namespace lc;
@@ -25,11 +23,12 @@ void Window::on_file_new()
 {
 	// Clear the editor of its current content, 
 	// including reference to files
-	content.add_page(new TextEdit());
+	content.add_page(new TextEdit(), &settings);
 }
 
 void Window::on_file_open()
 {
+	// Open a file choosing dialog an wait for the user to select a file
 	Gtk::FileChooserDialog file_chooser("Please choose a file");
 	file_chooser.add_button("_Select", Gtk::RESPONSE_OK);
 	file_chooser.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
@@ -37,12 +36,14 @@ void Window::on_file_open()
 	int result = file_chooser.run();
 	if (result == Gtk::RESPONSE_OK)
 	{
+		// Open a new text edit page with that file
 		string file_path = file_chooser.get_filename();
-		TextEdit *edit_page = new TextEdit(file_path);
 
+		// If there's nothing in the current page, overwrite it
+		// Otherwise, open a new page
 		ContentPage *curr_page = content.current();
 		if (curr_page->has_content())
-			content.add_page(edit_page);
+			content.add_page(new TextEdit(file_path), &settings);
 		else
 			curr_page->open(file_path);
 	}
@@ -60,16 +61,14 @@ void Window::on_file_save_as()
 
 void Window::options_editor()
 {
-	OptionsEditor options;
-	options.run();
-
-	content.apply_settings();
-	Options::save();
+	content.add_page(settings.make_page("Editor"), &settings);
 }
 
 Window::Window() :
 	layout(Gtk::Orientation::ORIENTATION_VERTICAL)
 {
+	settings.load();
+
 	// Create menubar 
 	auto action_group = Gtk::ActionGroup::create();
 	action_group->add(Gtk::Action::create("FileMenu", "_File"));
@@ -99,10 +98,11 @@ Window::Window() :
 		Gtk::PackOptions::PACK_SHRINK);
 
 	// Create content
-	content.add_page(new TextEdit());
+	content.add_page(new TextEdit(), &settings);
 	layout.pack_start(content);
 
 	add(layout);
 	set_default_size(800, 600);
+	set_title("Light Code");
 	show_all_children();
 }

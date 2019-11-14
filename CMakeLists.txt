@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES(include/)
 file(GLOB SRC
     "source/*.cpp"
     "source/content/*.cpp"
-    "source/options/*.cpp"
+    "source/settings/*.cpp"
 )
 
 ADD_EXECUTABLE(lightcode ${SRC})

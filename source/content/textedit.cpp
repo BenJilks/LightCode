@@ -1,6 +1,6 @@
 #include "content/textedit.hpp"
 #include "content/contentmanager.hpp"
-#include "options/optionseditor.hpp"
+#include "settings/settingsmanager.hpp"
 #include <gtkmm/cssprovider.h>
 #include <fstream>
 #include <vector>
@@ -21,17 +21,17 @@ TextEdit::TextEdit(string file_path) :
 		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	
 	add(text);
-	apply_settings();
 	title.update_title(get_title());
 }
 
 TextEdit::TextEdit() :
 	TextEdit("") {}
 
-void TextEdit::apply_settings()
+void TextEdit::apply_settings(SettingsManager *settings)
 {
-	auto font = OptionsEditor::get_font();
-	auto tab_size = OptionsEditor::get_tab_size();
+	auto editor = (*settings)["Editor"];
+	auto font = editor["Font"].get_font();
+	auto tab_size = editor["Tab Size"].get_int();
 
 	string css = 
 		"* { "

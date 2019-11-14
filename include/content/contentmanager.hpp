@@ -15,9 +15,9 @@ namespace lc
         ContentManager();
         ~ContentManager();
 
-        void add_page(ContentPage *page);
+        void add_page(ContentPage *page, SettingsManager *settings);
         void close_page(ContentPage *page);
-        void apply_settings();
+        void apply_settings(SettingsManager *settings);
         ContentPage *current();
     
     private:

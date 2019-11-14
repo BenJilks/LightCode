@@ -3,6 +3,7 @@
 #include <gtkmm/menubar.h>
 #include <gtkmm/box.h>
 #include <gtkmm/notebook.h>
+#include "settings/settingsmanager.hpp"
 #include "content/contentmanager.hpp"
 
 namespace lc
@@ -27,6 +28,7 @@ namespace lc
 		Gtk::MenuBar menu_bar;
 		Gtk::Box layout;
 		ContentManager content;
+		SettingsManager settings;
 	
 	};
 

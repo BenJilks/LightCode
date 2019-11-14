@@ -2,14 +2,10 @@
 #include <gtkmm/application.h>
 #include <gtkmm/cssprovider.h>
 #include "window.hpp"
-#include "options/options.hpp"
 using namespace lc;
 
 int main(int argc, char *argv[])
 {
-	// Load settings
-	Options::load();
-
 	// Create new gtk app
 	auto app = Gtk::Application::create(
 		argc, argv, "org.benjilks.lc");

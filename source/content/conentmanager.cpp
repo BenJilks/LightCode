@@ -1,4 +1,5 @@
 #include "content/contentmanager.hpp"
+#include "settings/settingsmanager.hpp"
 using namespace lc;
 
 ContentManager::ContentManager()
@@ -12,10 +13,16 @@ ContentManager::~ContentManager()
         delete page;
 }
 
-void ContentManager::add_page(ContentPage *page)
+void ContentManager::add_page(ContentPage *page, SettingsManager *settings)
 {
     pages.push_back(page);
     page->signal_exit([this, page]() { close_page(page); });
+    page->signal_apply([this, settings]() 
+    { 
+        apply_settings(settings);
+        settings->save();
+    });
+    page->apply_settings(settings);
 
     append_page(*page, page->get_title_widget());
     show_all_children();
@@ -34,10 +41,10 @@ void ContentManager::close_page(ContentPage *page)
     }
 }
 
-void ContentManager::apply_settings()
+void ContentManager::apply_settings(SettingsManager *settings)
 {
     for (auto page : pages)
-        page->apply_settings();
+        page->apply_settings(settings);
 }
 
 ContentPage *ContentManager::current()

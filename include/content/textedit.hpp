@@ -22,7 +22,7 @@ namespace lc
 		void clear();
 		virtual string get_title() const;
 		virtual bool has_content() const { return content_flag; }
-		virtual void apply_settings();
+		virtual void apply_settings(SettingsManager *settings);
 	
 	private:
 		string file_path;
