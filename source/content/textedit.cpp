@@ -37,9 +37,22 @@ void TextEdit::apply_settings(SettingsManager *settings)
 	string css = 
 		"* { "
 		"	font-family: \"" + font_desc.get_family() + "\";"
-		"	font-size: " + std::to_string(font_desc.get_size() / 1024) + "px;"
+		"	font-size: " + std::to_string(font_desc.get_size() / 1024.0f) + "px;"
 		"}";
 	css_provider->load_from_data(css);
+
+	// Get the font size in pixels
+	int width, height;
+	auto layout = Pango::Layout::create(get_pango_context());
+	layout->set_text(" ");
+	layout->set_font_description(font_desc);
+	layout->get_pixel_size(width, height);
+
+	// Set the tab size
+	Pango::TabArray tabs(1, true);
+	tabs.set_tab(0, Pango::TabAlign::TAB_LEFT, 
+		width * 0.75 * tab_size);
+	text.set_tabs(tabs);
 }
 
 string TextEdit::get_title() const
