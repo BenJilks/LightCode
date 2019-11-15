@@ -87,6 +87,11 @@ Window::Window() :
 	action_group->add(Gtk::Action::create("Editor", "_Editor"), 
 		sigc::mem_fun(*this, &Window::options_editor));
 
+	file_manager.signal_file_open([this] (string path) 
+	{
+		content.add_page(new TextEdit(path), &settings);
+	});
+
 	// Create menu bar ui
 	auto ui = Gtk::UIManager::create();
 	ui->insert_action_group(action_group);
