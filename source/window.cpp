@@ -99,7 +99,10 @@ Window::Window() :
 
 	// Create content
 	content.add_page(new TextEdit(), &settings);
-	layout.pack_start(content);
+	paned.set_position(200);
+	paned.add1(file_manager);
+	paned.add2(content);
+	layout.pack_start(paned);
 
 	add(layout);
 	set_default_size(800, 600);

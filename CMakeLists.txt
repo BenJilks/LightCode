@@ -1,6 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 project(lightcode)
 
+set(CMAKE_CXX_STANDARD 17)
 FIND_PACKAGE(RapidJSON REQUIRED)
 FIND_PACKAGE(PkgConfig REQUIRED)
 PKG_CHECK_MODULES(GTKMM REQUIRED gtkmm-3.0)
@@ -15,6 +16,7 @@ file(GLOB SRC
     "source/*.cpp"
     "source/content/*.cpp"
     "source/settings/*.cpp"
+    "source/filemanager/*.cpp"
 )
 
 ADD_EXECUTABLE(lightcode ${SRC})

@@ -25,6 +25,7 @@ void ContentManager::add_page(ContentPage *page, SettingsManager *settings)
     page->apply_settings(settings);
 
     append_page(*page, page->get_title_widget());
+    set_tab_reorderable(*page, true);
     show_all_children();
 }
 

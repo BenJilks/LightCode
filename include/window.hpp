@@ -2,9 +2,10 @@
 #include <gtkmm/window.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/box.h>
-#include <gtkmm/notebook.h>
-#include "settings/settingsmanager.hpp"
+#include <gtkmm/paned.h>
 #include "content/contentmanager.hpp"
+#include "settings/settingsmanager.hpp"
+#include "filemanager/filemanager.hpp"
 
 namespace lc
 {
@@ -27,7 +28,9 @@ namespace lc
 		// Menubar
 		Gtk::MenuBar menu_bar;
 		Gtk::Box layout;
+		Gtk::Paned paned;
 		ContentManager content;
+		FileManager file_manager;
 		SettingsManager settings;
 	
 	};

@@ -39,7 +39,6 @@ void TextEdit::apply_settings(SettingsManager *settings)
 		"	font-family: \"" + font_desc.get_family() + "\";"
 		"	font-size: " + std::to_string(font_desc.get_size() / 1024) + "px;"
 		"}";
-	printf("%s\n", css.c_str());
 	css_provider->load_from_data(css);
 }
 
