@@ -8,7 +8,7 @@ using std::vector;
 using namespace lc;
 
 TextEdit::TextEdit(string file_path) :
-	file_path(file_path), code("this is a test\n\tlolz")
+	file_path(file_path)
 {
 	if (file_path != "")
 		open(file_path);

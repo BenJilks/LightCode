@@ -1,0 +1,54 @@
+{
+	"name": "c",
+	"extentions": ["c", "h"],
+	
+	"tokens":
+	{
+		"keyword": 
+		[
+			"if",
+			"while",
+			"for",
+			"return",
+			"typedef",
+			"struct"
+		],
+		
+		"datatype":
+		[
+			"void",
+			"long",
+			"int",
+			"short",
+			"char",
+			"unsigned",
+			"float",
+			"double"
+		],
+		
+		"scopes":
+		[
+			["(", ")"],
+			["[", "]"],
+			["{", "}"]
+		],
+		
+		"comment":
+		[
+			"//.*$",
+			"/\\*.*\\*/"
+		],
+		
+		"macro":
+		[
+			"#include",
+			"#define [a-zA-Z0-9_]+ .*$",
+			"#if",
+			"#ifdef",
+			"#ifndef",
+			"#else",
+			"#endif"
+		]
+	}
+}
+

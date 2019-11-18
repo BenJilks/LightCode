@@ -1,5 +1,6 @@
 #pragma once
 #include "codeviewcursor.hpp"
+#include "syntax.hpp"
 #include <gtkmm/widget.h>
 #include <string>
 using std::string;
@@ -10,7 +11,7 @@ namespace lc
     class CodeView : public Gtk::Widget
     {
     public:
-        CodeView(string buffer);
+        CodeView();
         ~CodeView();
 
         void set_font(string font_name);
@@ -34,6 +35,7 @@ namespace lc
         Glib::RefPtr<Gdk::Window> window;
         Glib::RefPtr<Pango::Layout> layout;
         CodeViewCursor *cursor;
+        Syntax syntax;
 
         string buffer;
         int tab_size;

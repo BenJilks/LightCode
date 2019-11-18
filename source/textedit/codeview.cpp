@@ -3,10 +3,9 @@
 #include <gtkmm.h>
 using namespace lc;
 
-CodeView::CodeView(string buffer) :
+CodeView::CodeView() :
     Glib::ObjectBase("CodeView"),
-    Gtk::Widget(),
-    buffer(buffer), tab_size(4)
+    Gtk::Widget(), tab_size(4)
 {
     set_has_window(true);
     set_can_focus(true);
@@ -28,6 +27,12 @@ CodeView::CodeView(string buffer) :
     // Cursor blink event
     Glib::signal_timeout().connect(
         sigc::mem_fun(this, &CodeView::on_blink_update), 500);
+       
+    syntax.add_token("void", Syntax::DataType);
+    syntax.add_token("int", Syntax::DataType);
+    syntax.add_token("char", Syntax::DataType);
+    syntax.add_token("auto", Syntax::DataType);
+    syntax.add_token("return", Syntax::Keyword);
 }
 
 CodeView::~CodeView()
@@ -61,6 +66,7 @@ void CodeView::set_buffer(string str)
 {
     layout->set_text(str);
     buffer = str;
+    syntax.parse(buffer);
 }
 
 bool CodeView::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
@@ -91,6 +97,7 @@ void CodeView::draw_buffer(const Cairo::RefPtr<Cairo::Context>& cr)
     set_size_request(text_width, text_height);
 
     Pango::AttrList attrs;
+    syntax.apply_styles(attrs);
     cursor->apply_styles(get_style_context(), attrs);
     layout->set_attributes(attrs);
 
