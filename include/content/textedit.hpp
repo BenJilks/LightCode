@@ -1,6 +1,6 @@
 #pragma once
 #include "contentpage.hpp"
-#include <gtkmm/textview.h>
+#include "textedit/codeview.hpp"
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/cssprovider.h>
 #include <string>
@@ -26,9 +26,7 @@ namespace lc
 	
 	private:
 		string file_path;
-		Gtk::TextView text;
-		Glib::RefPtr<Gtk::TextBuffer> buffer;
-		Glib::RefPtr<Gtk::CssProvider> css_provider;
+		CodeView code;
 		bool content_flag = false;
 	
 	};

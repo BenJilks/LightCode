@@ -17,6 +17,7 @@ file(GLOB SRC
     "source/content/*.cpp"
     "source/settings/*.cpp"
     "source/filemanager/*.cpp"
+    "source/textedit/*.cpp"
 )
 
 ADD_EXECUTABLE(lightcode ${SRC})
