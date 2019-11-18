@@ -17,10 +17,9 @@ CodeView::CodeView(string buffer) :
         Gdk::POINTER_MOTION_MASK);
 
     // Create the text layout
-    Pango::FontDescription font("Monospace 12");
     layout = create_pango_layout("");
-    layout->set_font_description(font);
     layout->set_text(buffer);
+    set_font("Monospace 12");
 
     // Create cursor
     cursor = new CodeViewCursor(layout, this);
@@ -38,8 +37,24 @@ CodeView::~CodeView()
 
 void CodeView::set_font(string font_name)
 {
-    Pango::FontDescription font("Monospace 12");
+    Pango::FontDescription font(font_name);
     layout->set_font_description(font);
+    set_tab_size(tab_size);
+}
+
+void CodeView::set_tab_size(int size)
+{
+    // Find the width of each space
+    int width, height;
+    auto space_layout = create_pango_layout(" ");
+    space_layout->set_font_description(layout->get_font_description());
+    space_layout->get_pixel_size(width, height);
+
+    // Set the tab sizing
+    Pango::TabArray tabs(1, true);
+    tabs.set_tab(0, Pango::TAB_LEFT, width * size);
+    layout->set_tabs(tabs);
+    tab_size = size;
 }
 
 void CodeView::set_buffer(string str)

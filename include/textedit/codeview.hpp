@@ -14,7 +14,7 @@ namespace lc
         ~CodeView();
 
         void set_font(string font_name);
-        void set_tab_size(int size) { tab_size = size; }
+        void set_tab_size(int size);
         void set_buffer(string str);
 
     protected:
