@@ -3,9 +3,9 @@
 #include <gtkmm.h>
 using namespace lc;
 
-CodeView::CodeView() :
+CodeView::CodeView(Syntax syntax) :
     Glib::ObjectBase("CodeView"),
-    Gtk::Widget(), tab_size(4)
+    Gtk::Widget(), tab_size(4), syntax(syntax)
 {
     set_has_window(true);
     set_can_focus(true);
@@ -27,12 +27,6 @@ CodeView::CodeView() :
     // Cursor blink event
     Glib::signal_timeout().connect(
         sigc::mem_fun(this, &CodeView::on_blink_update), 500);
-       
-    syntax.add_token("void", Syntax::DataType);
-    syntax.add_token("int", Syntax::DataType);
-    syntax.add_token("char", Syntax::DataType);
-    syntax.add_token("auto", Syntax::DataType);
-    syntax.add_token("return", Syntax::Keyword);
 }
 
 CodeView::~CodeView()

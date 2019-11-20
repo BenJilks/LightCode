@@ -1,6 +1,6 @@
 #pragma once
 #include "codeviewcursor.hpp"
-#include "syntax.hpp"
+#include "language/syntax.hpp"
 #include <gtkmm/widget.h>
 #include <string>
 using std::string;
@@ -11,7 +11,7 @@ namespace lc
     class CodeView : public Gtk::Widget
     {
     public:
-        CodeView();
+        CodeView(Syntax syntax);
         ~CodeView();
 
         void set_font(string font_name);

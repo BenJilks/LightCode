@@ -12,7 +12,7 @@ namespace lc
 	class TextEdit : public ContentPage
 	{
 	public:
-		TextEdit(string file_path);
+		TextEdit(string file_path, Syntax syntax);
 		TextEdit();
 		
 		inline const string &get_file_path() const { return file_path; };

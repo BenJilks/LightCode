@@ -42,8 +42,9 @@ void Window::on_file_open()
 		// If there's nothing in the current page, overwrite it
 		// Otherwise, open a new page
 		ContentPage *curr_page = content.current();
+		Syntax syntax = lang_manager.find_lang(file_path);
 		if (curr_page->has_content())
-			content.add_page(new TextEdit(file_path), &settings);
+			content.add_page(new TextEdit(file_path, syntax), &settings);
 		else
 			curr_page->open(file_path);
 	}
@@ -89,7 +90,8 @@ Window::Window() :
 
 	file_manager.signal_file_open([this] (string path) 
 	{
-		content.add_page(new TextEdit(path), &settings);
+		Syntax syntax = lang_manager.find_lang(path);
+		content.add_page(new TextEdit(path, syntax), &settings);
 	});
 
 	// Create menu bar ui
@@ -108,6 +110,9 @@ Window::Window() :
 	paned.add1(file_manager);
 	paned.add2(content);
 	layout.pack_start(paned);
+
+	// Read languages
+	lang_manager = LanguageManager("../langs");
 
 	add(layout);
 	set_default_size(800, 600);

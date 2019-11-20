@@ -1,54 +1,97 @@
 {
 	"name": "c",
-	"extentions": ["c", "h"],
+	"extensions": ["c", "h", "cpp", "hpp"],
 	
+	"scopes":
+	[
+		["(", ")"],
+		["[", "]"],
+		["{", "}"]
+	],
+
 	"tokens":
 	{
-		"keyword": 
-		[
-			"if",
-			"while",
-			"for",
-			"return",
-			"typedef",
-			"struct"
-		],
+		"keyword":
+		{
+			"keyword": 
+			[
+				"if",
+				"else",
+				"while",
+				"for",
+				"return",
+				"typedef",
+				"struct",
+				"const",
+				"static"
+			]
+		},
 		
 		"datatype":
-		[
-			"void",
-			"long",
-			"int",
-			"short",
-			"char",
-			"unsigned",
-			"float",
-			"double"
-		],
-		
-		"scopes":
-		[
-			["(", ")"],
-			["[", "]"],
-			["{", "}"]
-		],
-		
-		"comment":
-		[
-			"//.*$",
-			"/\\*.*\\*/"
-		],
-		
+		{
+			"keyword":
+			[
+				"void",
+				"long",
+				"int",
+				"short",
+				"char",
+				"unsigned",
+				"float",
+				"double"
+			]
+		},
+
 		"macro":
-		[
-			"#include",
-			"#define [a-zA-Z0-9_]+ .*$",
-			"#if",
-			"#ifdef",
-			"#ifndef",
-			"#else",
-			"#endif"
-		]
+		{
+			"keyword":
+			[
+				"#if",
+				"#ifdef",
+				"#ifndef",
+				"#else",
+				"#endif"
+			],
+
+			"line":
+			[
+				"#include",
+				"#define"
+			]
+		},
+		
+		"comment": 
+		{
+			"line": ["//"],
+			"string": [["/*", "*/"]]
+		},
+
+		"number": 
+		{
+			"pattern": ["[0-9]+\\.[0-9]*f?"]
+		},
+
+		"string": 
+		{
+			"string":
+			[
+				["\"", "\""], 
+				["'", "'"]
+			]
+		},
+
+		"symbol":
+		{
+			"symbol":
+			[
+				"(", ")",
+				"[", "]",
+				"{", "}",
+				"+", "-", "*",
+				"=", ">", "<",
+				"&", "|", "^",
+				".", ";"
+			]
+		}
 	}
 }
-

@@ -6,6 +6,7 @@
 #include "content/contentmanager.hpp"
 #include "settings/settingsmanager.hpp"
 #include "filemanager/filemanager.hpp"
+#include "textedit/language/languagemanager.hpp"
 
 namespace lc
 {
@@ -31,6 +32,7 @@ namespace lc
 		Gtk::Paned paned;
 		ContentManager content;
 		FileManager file_manager;
+		LanguageManager lang_manager;
 		SettingsManager settings;
 	
 	};

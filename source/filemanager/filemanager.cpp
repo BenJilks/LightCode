@@ -9,7 +9,7 @@ FileManager::FileManager()
     tree_view.set_model(tree_model);
     tree_view.signal_row_activated().connect(
         sigc::mem_fun(this, &FileManager::item_selected));
-    open_folder("../");
+    open_folder("/home/benjilks/Dropbox/school/webbased/assignment2/WebAssignment2/");
 
     tree_view.append_column("File Name", columns.col_name);
     add(tree_view);

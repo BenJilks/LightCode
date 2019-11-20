@@ -7,8 +7,8 @@
 using std::vector;
 using namespace lc;
 
-TextEdit::TextEdit(string file_path) :
-	file_path(file_path)
+TextEdit::TextEdit(string file_path, Syntax syntax) :
+	file_path(file_path), code(syntax)
 {
 	if (file_path != "")
 		open(file_path);
@@ -18,7 +18,7 @@ TextEdit::TextEdit(string file_path) :
 }
 
 TextEdit::TextEdit() :
-	TextEdit("") {}
+	TextEdit("", Syntax("Plain Text")) {}
 
 void TextEdit::apply_settings(SettingsManager *settings)
 {

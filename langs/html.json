@@ -1,0 +1,80 @@
+{
+    "name": "html",
+    "extensions": ["html", "htm"],
+
+    "tokens":
+    {
+        "keyword":
+        {
+            "keyword":
+            [
+                "html",
+                "head",
+                "title",
+                "script",
+                "link",
+                "body",
+                "nav",
+                "div",
+                "button",
+                "ul",
+                "li",
+                "a",
+                "span",
+                "header",
+                "img",
+                "p",
+                "footer",
+                "h1",
+                "DOCTYPE",
+                "HTML"
+            ]
+        },
+
+        "datatype":
+        {
+            "keyword":
+            [
+                "lang",
+                "src",
+                "rel",
+                "href",
+                "class",
+                "type",
+                "data-toggle",
+                "data-target",
+                "aria-controls",
+                "aria-expanded",
+                "aria-label",
+                "id"
+            ]
+        },
+
+        "string":
+        {
+            "string":
+            [
+                ["\"", "\""]
+            ]
+        },
+
+        "comment":
+        {
+            "string":
+            [
+                ["!--", "-->"]
+            ]
+        },
+
+        "symbol":
+        {
+            "symbol":
+            [
+                "<", ">",
+                "/", "=",
+                "!"
+            ]
+        }
+    }
+
+}
