@@ -36,25 +36,23 @@ void Syntax::parse(string source)
 	string buffer = "";
 	while (pp < buffer_len)
 	{
-		char c = source[pp++];
+		char c = source[pp];
 		buffer += c;
-		if (isspace(c))
-		{
-			pos = pp;
-			buffer = "";
-			continue;
-		}
 
 		string symbol = string(&c, 1);
-		if (is_keyword(symbols, pp - 1, symbol) ||
-			is_keyword(keywords, pos, buffer) ||
-			/*is_pattern(pos, buffer) || */
-			is_line(pos, pp, source, buffer) ||
-			is_string(pos, pp, source, buffer))
+		if (isspace(c) ||
+			is_line(pp, source) ||
+			is_string(pp, source) || 
+			is_keyword(symbols, pp, symbol))
 		{
-			pos = pp;
+			string keyword = buffer.substr(0, buffer.length() - 1);
+			is_keyword(keywords, pos, keyword);
+
+			pos = pp + 1;
 			buffer = "";
 		}
+		
+		pp += 1;
 	}
 
 	has_parsed = true;
@@ -66,7 +64,7 @@ bool Syntax::is_keyword(vector<Token> &keywords, int pos, string &buffer)
 	{
 		if (keyword.pattern == buffer)
 		{
-			highlight(pos, buffer, keyword.type);
+			highlight(pos, buffer.length(), keyword.type);
 			return true;
 		}
 	}
@@ -81,7 +79,7 @@ bool Syntax::is_pattern(int pos, string &buffer)
 		std::regex reg(pattern.pattern);
 		if (std::regex_match(buffer, reg))
 		{
-			highlight(pos, buffer, pattern.type);
+			highlight(pos, buffer.length(), pattern.type);
 			return true;
 		}
 	}
@@ -89,10 +87,13 @@ bool Syntax::is_pattern(int pos, string &buffer)
 	return false;
 }
 
-bool Syntax::is_line(int pos, int &pp, string &source, string &buffer)
+bool Syntax::is_line(int &pp, string &source)
 {
+	int pos = pp;
 	for (auto &line : lines)
 	{
+		int length = line.pattern.length();
+		std::string_view buffer(&source[pp], length);
 		if (line.pattern == buffer)
 		{
 			for (;;)
@@ -100,10 +101,9 @@ bool Syntax::is_line(int pos, int &pp, string &source, string &buffer)
 				char c = source[pp++];
 				if (c == '\n')
 					break;
-				buffer += c;
 			}
 
-			highlight(pos, buffer, line.type);
+			highlight(pos, (pp - 1) - pos, line.type);
 			return true;
 		}
 	}
@@ -111,26 +111,29 @@ bool Syntax::is_line(int pos, int &pp, string &source, string &buffer)
 	return false;
 }
 
-bool Syntax::is_string(int pos, int &pp, string &source, string &buffer)
+bool Syntax::is_string(int &pp, string &source)
 {
+	int pos = pp;
 	for (auto &string : strings)
 	{
-		if (string.first == buffer)
+		int start_len = string.first.length();
+		int end_len = string.second.length();
+		std::string_view start(&source[pp], start_len);
+		if (string.first == start)
 		{
-			int len = string.second.length();
+			pp += start_len;
 			for (;;)
 			{
-				std::string_view str(source.c_str() + pp, len);
+				std::string_view str(&source[pp], end_len);
 				if (str == string.second)
 				{
-					buffer += str;
-					pp += len;
+					pp += end_len;
 					break;
 				}
-				buffer += source[pp++];
+				pp += 1;
 			}
 
-			highlight(pos, buffer, string.type);
+			highlight(pos, pp - pos, string.type);
 			return true;
 		}
 	}
@@ -156,13 +159,13 @@ static std::map<Syntax::Type, Gdk::RGBA> colours =
 	std::make_pair(Syntax::Type::Symbol, Gdk::RGBA("#FFFFFF")),
 };
 
-void Syntax::highlight(int pos, string &buffer, Type type)
+void Syntax::highlight(int pos, int len, Type type)
 {
 	auto attr = Pango::Attribute::
 		create_attr_foreground(COLOUR(colours[type]));
 
 	attr.set_start_index(pos);
-	attr.set_end_index(pos + buffer.length());
+	attr.set_end_index(pos + len);
 	highlighting.insert(attr);
 }
 

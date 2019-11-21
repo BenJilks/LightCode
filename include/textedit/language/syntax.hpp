@@ -50,9 +50,9 @@ namespace lc
 	private:
 		bool is_keyword(vector<Token> &keywords, int pos, string &buffer);
 		bool is_pattern(int pos, string &buffer);
-		bool is_line(int pos, int &pp, string &source, string &buffer);
-		bool is_string(int pos, int &pp, string &source, string &buffer);
-		void highlight(int pos, string &buffer, Type type);
+		bool is_line(int &pp, string &source);
+		bool is_string(int &pp, string &source);
+		void highlight(int pos, int len, Type type);
 
 		string name;
 		vector<string> extentions;
